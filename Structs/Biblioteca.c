@@ -138,13 +138,13 @@ switch (opcao){
                 printf("Livros disponiveis:\n");
                 int disponiveis = 0;
                 for (int i = 0; i < totalLivros; i++){
-                    if (biblioteca[i].disponivel){
+                    if (biblioteca[i].disponivel = 1){
                         printf("%d - %s\n", i + 1, biblioteca[i].nome);
                         disponiveis++;
                     }
                 }
 
-                if (disponiveis == 0){
+            if (disponiveis == 0){
                     printf("Nenhum livro disponivel para emprestimo.\n");
                 } else {
                     printf("\nDigite o numero do livro que deseja emprestar: ");
