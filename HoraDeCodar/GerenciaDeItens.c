@@ -113,7 +113,7 @@ void removerListaEstatica(ListaEstatica *lista, const char* texto){
     }
 
 
-    // Trataamento de erro
+    // Tratamento de erro
     if (pos == -1){
         printf("Erro: Texto \"%s\" não encontrado na lista.\n");
         return;
@@ -140,4 +140,105 @@ void listarListaEstatica(const ListaEstatica *lista){
     printf("]\n");
 }
 
+// LISTA ENCADEADA
+void inicializarListaEncadeada(ListaEncadeada *lista){
+    *lista = NULL;
+}
 
+void inserirListaEncadeada(ListaEncadeada *lista, const char* texto){
+    // Alocação de memoria para o novo nó
+    No *novoNo = (No*) malloc(sizeof(No));
+
+    if (novoNo == NULL){
+        printf("Erro: Falha na alocação de memoria para o novo nó.\n");
+        return;
+    }
+
+    // Alocação de memoria para a string do nó
+    novoNo-> dado = (char*) malloc(strlen(texto) + 1);
+
+    if (novoNo->dado == NULL){
+        printf("Erro: Falha na alocação de memoria pra o texto.\n");
+        free(novoNo); // Libera o nó alocado anteriormente
+        return;
+    }
+
+    strcpy(novoNo->dado, texto); // Copia o texto para o campo dado do nó
+    novoNo->proximo = *lista;
+    *lista = novoNo;
+
+    printf("Texto \"%s\" inserido com sucesso.\n", texto);
+}
+
+
+void removerListaEncadeada(ListaEncadeada *lista, const char* texto){
+    No *atual = *lista;
+    No *anterior = NULL;
+
+    while (atual != NULL && strcmp(atual->dado, texto) != 0){
+        anterior = atual;
+        atual = atual->proximo;
+    }
+
+    if (atual == NULL){
+        printf("Erro: Texto \"%s\" não encontrado na lista. \n", texto);
+        return;
+    }
+
+    if (anterior == NULL){
+        *lista = atual->proximo;
+    } else {
+        anterior->proximo = atual->proximo;
+    }
+
+    free(atual->dado);
+    free(atual);
+    printf("Texto \"%s\" removido com sucesso.\n", texto);
+}
+
+void listarListaEncadeada(const ListaEncadeada *lista){
+    No *temp = *lista;
+    if (temp == NULL){
+        printf("A lista encadeada está vazia.\n");
+        return;
+    }
+    printf("Itens da lista Encadeada: [ ");
+    while (temp != NULL){
+        printf("\"%s\" ", temp->dado); //Usar %s para imprimir
+        temp = temp->proximo;
+    }
+    printf("]\n");
+
+}
+
+int opcao; // Variável global para armazenar a opção escolhida no menu
+
+void menuListaEstatica(){
+    printf("\n------ MENU LISTA ESTÁTICA ------\n");
+    printf("1. Inserir item na lista estática\n");
+    printf("2. Remover item da lista estática\n");
+    printf("3. Listar itens da lista estática\n");
+    scanf("%d", &opcao);
+}
+
+void menuListaEncadeada(){
+    printf("\n------ MENU LISTA ENCADEADA ------\n");
+    printf("1. Inserir item na lista encadeada\n");
+    printf("2. Remover item da lista encadeada\n");
+    printf("3. Listar itens da lista encadeada\n");
+    scanf("%d", &opcao);
+}
+
+
+//Funções para liberar memoria
+void liberarListaEncadeada(ListaEncadeada *lista){
+    No *atual = *lista;
+    No *proximo;
+    while (atual != NULL){
+        proximo = atual->proximo;
+        free(atual->dado); // Libera a string
+        free(atual); // Libera o nó
+        atual = proximo;
+
+    }
+}
